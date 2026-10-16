@@ -270,7 +270,7 @@ export function EventPage({ mode = 'id' }: { mode?: 'id' | 'address' }) {
           </Section>
 
           <Section
-            icon={<Info className="h-4 w-4 text-muted-foreground" />}
+            icon={<Info className="h-4 w-4 text-ok" />}
             summary={`Kind ${event.kind} · ${kindInfo.nip ? `${kindInfo.nip} ` : ''}${kindInfo.description}`}
           >
             <dl className="grid gap-x-4 gap-y-2 text-sm sm:grid-cols-[max-content_1fr]">
