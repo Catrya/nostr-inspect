@@ -40,9 +40,32 @@ describe('kinds from the kinds registry', () => {
     expect(getKindInfo(1064)).toMatchObject({ nip: '', description: 'Blob Data (NIP-95)', link: REGISTRY });
   });
 
+  it('prefers a registry kind over the NIP-90 job range it falls in', () => {
+    expect(getKindInfo(5129)).toMatchObject({ nip: '', description: 'Napplet Snapshot', link: REGISTRY });
+    expect(getKindInfo(6969)).toMatchObject({ nip: '', description: 'Zap Poll', link: REGISTRY });
+    expect(getKindInfo(6969)).not.toHaveProperty('unrecommended');
+  });
+
   it('links a registry kind to its NIP or spec when the registry names one', () => {
     expect(getKindInfo(30385)).toMatchObject({ nip: 'NIP-85', description: 'External ID Assertion' });
     expect(getKindInfo(36820)).toMatchObject({ nip: 'Hitchhiking Data Standard', description: 'Hitchhiking Ride', link: 'https://github.com/Hitchwiki/hitchhiking-data-standard' });
+  });
+});
+
+describe('NIP-29 group kinds', () => {
+  it('names each group kind, falling back to the range for unnamed ones', () => {
+    expect(getKindInfo(9007)).toMatchObject({ nip: 'NIP-29', description: 'Create Group' });
+    expect(getKindInfo(39001)).toMatchObject({ nip: 'NIP-29', description: 'Group Admins', classification: 'addressable' });
+    expect(getKindInfo(9003)).toMatchObject({ nip: 'NIP-29', description: 'Group Control Events' });
+    expect(getKindsForNip('29').filter(k => k === 9000)).toHaveLength(1);
+  });
+});
+
+describe('Mostro kinds', () => {
+  it('describes every Mostro kind, linking to the Mostro protocol docs', () => {
+    expect(getKindInfo(38389)).toMatchObject({ nip: 'Mostro', description: 'Mostro health', link: 'https://mostro.network/protocol/health_event.html', classification: 'addressable' });
+    expect(getKindsForNip('Mostro')).toEqual([38384, 38385, 38386, 38387, 38388, 38389]);
+    expect(getKindInfo(38383).nip).toBe('NIP-69');
   });
 });
 
